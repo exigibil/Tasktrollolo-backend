@@ -36,10 +36,7 @@ router.post("/register", async (req, res) => {
         await newUser.setPassword(password);
         await newUser.save();
 
-        // Generate tokens for the new user
         const { token, refreshToken } = generateTokens(newUser);
-
-        // Save the refresh token in the database
         newUser.refreshToken = refreshToken;
         await newUser.save();
 
@@ -84,8 +81,6 @@ router.post("/login", async (req, res) => {
 
     try {
         const { token, refreshToken } = generateTokens(user);
-
-        // Save the refresh token in the database
         user.refreshToken = refreshToken;
         await user.save();
 
@@ -117,8 +112,6 @@ router.post("/login", async (req, res) => {
 router.get("/logout", auth, async (req, res) => {
     try {
         const user = req.user;
-
-        // Remove the refresh token from the database
         user.refreshToken = null;
         await user.save();
 
@@ -160,6 +153,10 @@ router.post("/refresh", async (req, res) => {
     } catch (error) {
         return res.status(403).json({ message: "Invalid or expired refresh token" });
     }
+});
+
+router.get('/user', auth, async (req, res) => {
+    res.json(req.user); 
 });
 
 module.exports = router;

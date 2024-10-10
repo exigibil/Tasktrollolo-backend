@@ -1,0 +1,731 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "TaskTrollolo API",
+    "description": "\n\n API documentation for TaskTrollolo - Our final project \n\n💾 [Backend Repository](https://github.com/exigibil/Tasktrollolo-backend) - \n\n🖥 [Frontend Repository](https://github.com/exigibil/Tasktrollolo) \n\n📂 [Figma Design](https://www.figma.com/design/fJF13s2UlxPIwTMcPVrSiz/TaskPro?t=BRwoZsq1XJGXwShy-0) \n\n This project was developed by: \n\n1.[Adrian Popa - Team Leader](https://github.com/exigibil), \n\n2.[Florentina Vachente - Scrum Master](https://github.com/FloriGOIT), \n\n3.[Gavrila Daniela](https://github.com/gavrila0909), \n\n4.[Ovidiu Bodean](https://github.com/ovidutzul), \n\n5.[Andrei-Gabriel Paiu-Rotundu](https://github.com/djxsrouk)"
+  },
+  "host": "localhost:2000",
+  "basePath": "/auth",
+  "servers": ["http"],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Boards",
+      "description": "Boards endpoints"
+    },
+    {
+      "name": "Columns",
+      "description": "Columns endpoints"
+    },
+    {
+      "name": "Cards",
+      "description": "Cards endpoints"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user",
+        "description": "Registers a new user with name, email, and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Registration successful"
+          },
+          "409": {
+            "description": "Email already in use"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login a user",
+        "description": "Logs in a user with email and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": ["email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Incorrect email or password"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout a user",
+        "description": "Logs out the authenticated user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged out"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/boards": {
+      "get": {
+        "tags": [
+          "Boards"
+        ],
+        "summary": "Get all boards",
+        "description": "Retrieves all boards for the authenticated user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Boards retrieved successfully"
+          },
+          "404": {
+            "description": "No boards found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Boards"
+        ],
+        "summary": "Create a new board",
+        "description": "Creates a new board for the authenticated user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titleBoard": {
+                  "type": "string"
+                },
+                "background": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "filter": {
+                  "type": "string"
+                }
+              },
+              "required": ["titleBoard"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Board created successfully"
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Boards"
+        ],
+        "summary": "Update a board",
+        "description": "Updates a board for the authenticated user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Board ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titleBoard": {
+                  "type": "string"
+                },
+                "background": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "filter": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board updated successfully"
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "Board not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Boards"
+        ],
+        "summary": "Delete a board",
+        "description": "Deletes a board for the authenticated user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Board ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board deleted successfully"
+          },
+          "400": {
+            "description": "Board ID is required"
+          },
+          "404": {
+            "description": "Board not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/boards/{id}": {
+      "get": {
+        "tags": [
+          "Boards"
+        ],
+        "summary": "Get a board by ID",
+        "description": "Retrieves a board by ID for the authenticated user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Board ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board retrieved successfully"
+          },
+          "404": {
+            "description": "Board not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/columns": {
+      "get": {
+        "tags": [
+          "Columns"
+        ],
+        "summary": "Get all columns",
+        "description": "Retrieves all columns",
+        "responses": {
+          "200": {
+            "description": "Columns retrieved successfully"
+          },
+          "404": {
+            "description": "No columns found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Columns"
+        ],
+        "summary": "Create a new column",
+        "description": "Creates a new column",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titleColumn": {
+                  "type": "string"
+                },
+                "boardId": {
+                  "type": "string"
+                },
+                "owner": {
+                  "type": "string"
+                }
+              },
+              "required": ["titleColumn", "boardId", "owner"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Column created successfully"
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Columns"
+        ],
+        "summary": "Update a column",
+        "description": "Updates a column",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Board ID"
+          },
+          {
+            "name": "columnId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Column ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titleColumn": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Column updated successfully"
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "Column not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Columns"
+        ],
+        "summary": "Delete a column",
+        "description": "Deletes a column",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Board ID"
+          },
+          {
+            "name": "columnId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Column ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Column deleted successfully"
+          },
+          "404": {
+            "description": "Column not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/cards": {
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Get all cards",
+        "description": "Retrieves all cards",
+        "responses": {
+          "200": {
+            "description": "Cards retrieved successfully"
+          },
+          "404": {
+            "description": "No cards found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Create a new card",
+        "description": "Creates a new card",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titleCard": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "string"
+                },
+                "deadline": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "columnId": {
+                  "type": "string"
+                },
+                "owner": {
+                  "type": "string"
+                }
+              },
+              "required": ["titleCard", "columnId", "owner"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Card created successfully"
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Update a card",
+        "description": "Updates a card",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Column ID"
+          },
+          {
+            "name": "cardId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Card ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "titleCard": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "string"
+                },
+                "deadline": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card updated successfully"
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Delete a card",
+        "description": "Deletes a card",
+        "parameters": [
+          {
+            "name": "columnId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Column ID"
+          },
+          {
+            "name": "cardId",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Card ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card deleted successfully"
+          },
+          "400": {
+            "description": "Missing id or cardId in query parameters"
+          },
+          "404": {
+            "description": "Card not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Board": {
+      "type": "object",
+      "properties": {
+        "titleBoard": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "string"
+        }
+      }
+    },
+    "Column": {
+      "type": "object",
+      "properties": {
+        "titleColumn": {
+          "type": "string"
+        },
+        "boardId": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        }
+      }
+    },
+    "Card": {
+      "type": "object",
+      "properties": {
+        "titleCard": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "columnId": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
